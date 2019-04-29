@@ -9,7 +9,10 @@ import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.downloader.HttpClientDownloader;
 import us.codecraft.webmagic.processor.PageProcessor;
+import us.codecraft.webmagic.proxy.Proxy;
+import us.codecraft.webmagic.proxy.SimpleProxyProvider;
 import us.codecraft.webmagic.scheduler.BloomFilterDuplicateRemover;
 import us.codecraft.webmagic.scheduler.QueueScheduler;
 import us.codecraft.webmagic.selector.Html;
@@ -85,9 +88,14 @@ public class JobProcess implements PageProcessor {
 
     @Scheduled(initialDelay = 1000, fixedDelay = 10000)
     public void process() {
+        // 创建一个下载器
+        HttpClientDownloader downloader = new HttpClientDownloader();
+        downloader.setProxyProvider(SimpleProxyProvider.from(new Proxy("60.182.188.139",32901)));
+        // 给下载器设置代理服务器信息
         Spider.create(new JobProcess())
                 .setScheduler(new QueueScheduler().setDuplicateRemover(new BloomFilterDuplicateRemover(1000000)))
                 .addPipeline(springDataPipleline)
+                .setDownloader(downloader)
                 .addUrl(URL)
                 .thread(10)
                 .run();
