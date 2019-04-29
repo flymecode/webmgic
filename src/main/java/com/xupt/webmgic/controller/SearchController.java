@@ -20,5 +20,6 @@ public class SearchController {
     @PostMapping
     public String search(String salary, String jobAddr, String keyword, Integer page) {
         return jobRepositoryService.search(salary, jobAddr, keyword, page);
+
     }
 }
