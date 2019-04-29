@@ -25,4 +25,9 @@ public class JobItemRepositoryServcieImpl implements JobRepositoryService {
     public void saveAll(List<JobItem> list) {
         jobSearch.saveAll(list);
     }
+
+    @Override
+    public String search(String salary, String jobAddr, String keyword, Integer page) {
+        return null;
+    }
 }

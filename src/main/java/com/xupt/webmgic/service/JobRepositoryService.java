@@ -12,4 +12,6 @@ public interface JobRepositoryService {
     void save(JobItem jobItem);
 
     void saveAll(List<JobItem> list);
+
+    String search(String salary, String jobAddr, String keyword, Integer page);
 }
